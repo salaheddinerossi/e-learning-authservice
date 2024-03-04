@@ -1,9 +1,12 @@
 package com.example.authservice.serviceImpl;
 
 import com.example.authservice.dto.AdminDto;
+import com.example.authservice.dto.PasswordDto;
 import com.example.authservice.dto.StudentDto;
 import com.example.authservice.dto.TeacherDto;
 import com.example.authservice.exception.EmailAlreadyUsedException;
+import com.example.authservice.exception.NoMatchingPasswordException;
+import com.example.authservice.exception.UserNotFoundException;
 import com.example.authservice.model.Admin;
 import com.example.authservice.model.Student;
 import com.example.authservice.model.Teacher;
@@ -11,6 +14,7 @@ import com.example.authservice.model.User;
 import com.example.authservice.repository.UserRepository;
 import com.example.authservice.service.UserService;
 import jakarta.transaction.Transactional;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -87,8 +91,26 @@ public class UserServiceImpl implements UserService{
         return userRepository.findByEmail(email);
     }
 
+    @Override
+    public Boolean changePassword(PasswordDto passwordDto, String email) {
+
+        User user = findUserByEmail(email).orElseThrow(
+                UserNotFoundException::new
+        );
+
+        if (!passwordEncoder.matches(passwordDto.getOldPassword(),user.getPassword())){
+            return false;
+        }
+
+        user.setPassword(passwordEncoder.encode(passwordDto.getNewPassword()));
+
+        userRepository.save(user);
+        return true;
+    }
+
     Boolean isEmailUsed(String email){
         return findUserByEmail(email).isPresent();
     }
+
 
 }

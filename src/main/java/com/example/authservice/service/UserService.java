@@ -1,6 +1,7 @@
 package com.example.authservice.service;
 
 import com.example.authservice.dto.AdminDto;
+import com.example.authservice.dto.PasswordDto;
 import com.example.authservice.dto.StudentDto;
 import com.example.authservice.dto.TeacherDto;
 import com.example.authservice.model.User;
@@ -16,5 +17,8 @@ public interface UserService {
     void RegisterTeacher(TeacherDto teacherDto);
 
     Optional<User> findUserByEmail(String email);
+
+    Boolean changePassword(PasswordDto passwordDto, String email);
+
 
 }

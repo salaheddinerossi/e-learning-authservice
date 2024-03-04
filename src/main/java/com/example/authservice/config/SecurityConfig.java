@@ -1,6 +1,7 @@
 package com.example.authservice.config;
 
 
+import com.example.authservice.security.CustomAuthenticationEntryPoint;
 import com.example.authservice.security.JwtRequestFilter;
 import com.example.authservice.security.JwtTokenUtil;
 import org.springframework.context.annotation.Bean;
@@ -28,9 +29,13 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final JwtTokenUtil jwtTokenUtil;
 
-    public SecurityConfig(UserDetailsService userDetailsService, JwtTokenUtil jwtTokenUtil) {
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+
+    public SecurityConfig(UserDetailsService userDetailsService, JwtTokenUtil jwtTokenUtil, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
         this.userDetailsService = userDetailsService;
         this.jwtTokenUtil = jwtTokenUtil;
+        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
     }
 
     @Bean
@@ -43,10 +48,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable()) // Disabling CSRF protection
+                .exceptionHandling(exceptionHandlingConfigurer -> exceptionHandlingConfigurer.authenticationEntryPoint(customAuthenticationEntryPoint))
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
+
                 )
+
                 .addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(withDefaults());
 

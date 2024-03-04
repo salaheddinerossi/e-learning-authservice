@@ -15,4 +15,16 @@ public class GlobalExceptionHandler {
         return e.getMessage();
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handelUserNotFoundException(UserNotFoundException e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler(NoMatchingPasswordException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handelNoMatchingPasswordException(NoMatchingPasswordException e) {
+        return e.getMessage();
+    }
+
 }
