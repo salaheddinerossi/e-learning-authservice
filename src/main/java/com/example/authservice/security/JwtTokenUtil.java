@@ -29,10 +29,10 @@ public class JwtTokenUtil {
 
     public String generateToken(String email, String role) {
         Map<String, Object> claimsMap = new HashMap<>();
-        claimsMap.put("role", role);  // Include the user's role in the token
+        claimsMap.put("role", role);
 
         return Jwts.builder()
-                .setClaims(claimsMap) // Set the custom claims
+                .setClaims(claimsMap)
                 .setSubject(email)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))

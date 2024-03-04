@@ -7,18 +7,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "student")
-public class Student {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String firstName;
-
-    private String lastName;
-
-    private String email;
-
-    private String password;
+@DiscriminatorValue("STUDENT")
+public class Student extends User {
 
 }
+
