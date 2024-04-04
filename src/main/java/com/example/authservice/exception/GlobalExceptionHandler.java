@@ -1,6 +1,8 @@
 package com.example.authservice.exception;
 
+import com.example.authservice.util.ApiResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -9,22 +11,29 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(EmailAlreadyUsedException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handelEmailAlreadyUsedException(EmailAlreadyUsedException e) {
-        return e.getMessage();
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ApiResponse<Object>> handleBadRequestException(BadRequestException ex) {
+        ApiResponse<Object> response = new ApiResponse<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handelUserNotFoundException(UserNotFoundException e) {
-        return e.getMessage();
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiResponse<Object>> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        ApiResponse<Object> response = new ApiResponse<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(NoMatchingPasswordException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handelNoMatchingPasswordException(NoMatchingPasswordException e) {
-        return e.getMessage();
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<ApiResponse<Object>> handleInvalidTokenException(InvalidTokenException ex) {
+        ApiResponse<Object> response = new ApiResponse<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ApiResponse<Object>> handleUnauthorizedException(UnauthorizedException ex) {
+        ApiResponse<Object> response = new ApiResponse<>(false, ex.getMessage(), null);
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
 }

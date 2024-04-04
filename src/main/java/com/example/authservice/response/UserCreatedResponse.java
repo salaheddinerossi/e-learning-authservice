@@ -1,9 +1,12 @@
-package com.example.authservice.dto;
+package com.example.authservice.response;
+
 
 import lombok.Data;
 
 @Data
-public class TeacherDto {
+public class UserCreatedResponse {
+
+    private Long id;
 
     private String firstName;
 
@@ -11,8 +14,6 @@ public class TeacherDto {
 
     private String email;
 
-    private String password;
 
     private String phoneNumber;
-
 }

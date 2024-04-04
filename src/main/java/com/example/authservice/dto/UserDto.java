@@ -1,9 +1,11 @@
 package com.example.authservice.dto;
 
+
 import lombok.Data;
 
 @Data
-public class AdminDto {
+public class UserDto {
+
     private String firstName;
 
     private String lastName;
@@ -11,5 +13,7 @@ public class AdminDto {
     private String email;
 
     private String password;
+
+    private String phoneNumber;
 
 }

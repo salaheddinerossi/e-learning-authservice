@@ -1,20 +1,19 @@
 package com.example.authservice.service;
 
-import com.example.authservice.dto.AdminDto;
 import com.example.authservice.dto.PasswordDto;
-import com.example.authservice.dto.StudentDto;
-import com.example.authservice.dto.TeacherDto;
+import com.example.authservice.dto.UserDto;
 import com.example.authservice.model.User;
+import com.example.authservice.response.UserCreatedResponse;
 
 import java.util.Optional;
 
 public interface UserService {
 
-    void RegisterStudent(StudentDto studentDto);
+    UserCreatedResponse RegisterStudent(UserDto userDto);
 
-    void RegisterAdmin(AdminDto adminDto);
+    UserCreatedResponse RegisterAdmin(UserDto userDto);
 
-    void RegisterTeacher(TeacherDto teacherDto);
+    UserCreatedResponse RegisterTeacher(UserDto userDto);
 
     Optional<User> findUserByEmail(String email);
 

@@ -1,16 +1,20 @@
 package com.example.authservice.controller;
 
 
-import com.example.authservice.dto.AdminDto;
-import com.example.authservice.dto.StudentDto;
-import com.example.authservice.dto.TeacherDto;
+import com.example.authservice.dto.UserDto;
+import com.example.authservice.exception.UnauthorizedException;
+import com.example.authservice.response.UserCreatedResponse;
 import com.example.authservice.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.authservice.util.ApiResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/register")
@@ -24,26 +28,33 @@ public class RegisterController {
     }
 
     @PostMapping("/admin")
-    public ResponseEntity<?> registerAdmin(@RequestBody AdminDto adminDto){
+    public ResponseEntity<ApiResponse<UserCreatedResponse>> registerAdmin(@RequestBody UserDto userDto,@AuthenticationPrincipal UserDetails userDetails){
 
-        userService.RegisterAdmin(adminDto);
-        return ResponseEntity.ok("admin created");
+        String role = userDetails.getAuthorities().isEmpty() ? null :
+                userDetails.getAuthorities().iterator().next().getAuthority();
+
+        if (!Objects.equals(role, "ROLE_ADMIN")){
+            throw new UnauthorizedException("you have to be an admin to perform this action");
+        }
+
+        UserCreatedResponse userCreatedResponse = userService.RegisterAdmin(userDto);
+        return ResponseEntity.ok(new ApiResponse<>(true,"admin account created",userCreatedResponse));
 
     }
 
     @PostMapping("/student")
-    public ResponseEntity<?> registerStudent(@RequestBody StudentDto studentDto){
+    public ResponseEntity<ApiResponse<UserCreatedResponse>> registerStudent(@RequestBody UserDto userDto){
 
-        userService.RegisterStudent(studentDto);
-        return ResponseEntity.ok("student created");
+        UserCreatedResponse userCreatedResponse =userService.RegisterStudent(userDto);
+        return ResponseEntity.ok(new ApiResponse<>(true,"student account created",userCreatedResponse));
 
     }
 
     @PostMapping("/teacher")
-    public ResponseEntity<?> registerTeacher(@RequestBody TeacherDto teacherDto){
+    public ResponseEntity<ApiResponse<UserCreatedResponse>> registerTeacher(@RequestBody UserDto userDto){
 
-        userService.RegisterTeacher(teacherDto);
-        return ResponseEntity.ok("teacher created");
+        UserCreatedResponse userCreatedResponse =userService.RegisterTeacher(userDto);
+        return ResponseEntity.ok(new ApiResponse<>(true,"teacher account created",userCreatedResponse));
 
     }
 
