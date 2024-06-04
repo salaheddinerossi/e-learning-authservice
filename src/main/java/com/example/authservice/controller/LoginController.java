@@ -61,6 +61,7 @@ public class LoginController {
 
             String token = jwtTokenUtil.generateToken(userDetails.getUsername(), expectedRole);
             JwtResponse jwtResponse = new JwtResponse(token);
+
             jwtResponse.setEmail(userDetails.getUsername());
             jwtResponse.setRole(expectedRole);
 
