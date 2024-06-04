@@ -101,7 +101,6 @@
                             <artifactId>lombok-mapstruct-binding</artifactId>
                             <version>0.2.0</version>
                         </path>
-                        <!-- other annotation processors -->
                     </annotationProcessorPaths>
                     <compilerArgs>
                         <compilerArg>
@@ -112,15 +111,10 @@
             </plugin>
 
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.0</version>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.example.AuthServiceApplication</mainClass>
-                        </manifest>
-                    </archive>
+                    <mainClass>com.example.AuthServiceApplication</mainClass>
                 </configuration>
             </plugin>
 
